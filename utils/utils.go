@@ -58,3 +58,4 @@ func LoadQiniu(file *ini.File) {
 	Bucket = section.Key("Bucket").String()
 	QiniuServer = section.Key("QiniuServer").String()
 }
+
