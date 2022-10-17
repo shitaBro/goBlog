@@ -64,11 +64,11 @@ func CreateUser(data *User) int {
 //查询单个用户
 func GetUserInfo(id int) (User ,int) {
 	var user User
-	err := db.Where("id = ?",id).First(&user).Error
+	err := db.Where("id = ?",id).First(&user).Omit("password").Error
 	if err == nil {
 		return user,errmsg.SUCCESS
 	}
-	return user,errmsg.ERROR
+	return user,errmsg.ERROR_USERNAME_NOT_EXIST
 }
 //获取用户列表
 func GetUserList(username string ,page int ,size int) ([]User,int) {
@@ -105,7 +105,7 @@ func DeleteUser(id int) int {
 }
 //重置密码
 func ResetPsw(id int) int {
-	err := db.Where("id = ?",id).Update("password",ScryptPsw("123456")).Error
+	err := db.Model(&User{}).Where("id = ?",id).Update("password",ScryptPsw("123456")).Error
 	if err == nil {
 		return errmsg.SUCCESS
 	}
