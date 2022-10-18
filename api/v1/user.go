@@ -4,6 +4,7 @@ import (
 	"goblog/model"
 	"goblog/utils/errmsg"
 	"goblog/utils/rresult"
+	"goblog/utils/validator"
 	"net/http"
 	"strconv"
 
@@ -11,15 +12,23 @@ import (
 )
 var code int
 func AddUser(c *gin.Context) {
-	var data *model.User
-	// var msg string
+	var data model.User
+	var msg string
 	_  = c.ShouldBindJSON(&data)
+	msg,code = validator.Validate(&data)
+	if code != errmsg.SUCCESS {
+		c.JSON(http.StatusOK,rresult.Result{
+			Code: code,
+			Message: msg,
+		})
+		return
+	}
 	code = model.CheckUserExits(data.Username)
 	// if code == errmsg.ERROR_USERNAME_USED {
 
 	// }
 	if code == errmsg.SUCCESS {
-		model.CreateUser(data)
+		model.CreateUser(&data)
 
 	}
 	c.JSON(http.StatusOK,rresult.Result{

@@ -5,6 +5,7 @@ import (
 	"goblog/model"
 	"goblog/utils/errmsg"
 	"goblog/utils/rresult"
+	"goblog/utils/validator"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,6 +15,14 @@ func Login(c *gin.Context) {
 	var token string
 	var code int
 	c.ShouldBindJSON(&data)
+	msg,code := validator.Validate(&data)
+	if code != errmsg.SUCCESS {
+		c.JSON(http.StatusOK,rresult.Result{
+			Code: code,
+			Message: msg,
+		})
+		return
+	}
 	code = model.CheckLogin(data.Username,data.Password)
 	if code == errmsg.SUCCESS {
 		token,code = middleware.SetToken(data.Username) 

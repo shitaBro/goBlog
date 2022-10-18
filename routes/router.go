@@ -10,6 +10,10 @@ import (
 func InitRouter(){
 	gin.SetMode(utils.AppMode)
 	r := gin.New()
+	//跨域中间件
+	r.Use(middleware.Cors())
+	//日志
+	r.Use(middleware.Loggering())
 	r.Use(gin.Recovery())
 	//需要验证token
 	auth := r.Group("api/v1")
