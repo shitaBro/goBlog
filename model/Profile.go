@@ -3,8 +3,7 @@ package model
 import (
 	"fmt"
 	"goblog/utils/errmsg"
-
-	"github.com/go-playground/validator/v10"
+	
 	// "github.com/jinzhu/gorm"
 )
 
@@ -37,7 +36,8 @@ func UpdateProfile(id int, data *Profile) int {
 	var profile Profile
 	db.Select("id").Where("id = ?", id).First(&profile)
 	fmt.Println("db .id:", profile.ID)
-	validator.Validate(data)
+	
+	
 	if profile.ID > 0 {
 		err := db.Model(&profile).Where("id = ?", id).Update(&data).Error
 		if err != nil {

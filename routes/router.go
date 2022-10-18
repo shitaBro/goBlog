@@ -24,6 +24,11 @@ func InitRouter(){
 		auth.DELETE("user/:id",v1.DeleteUser)
 		auth.PUT("user/:id/reset",v1.ResetPsw)
 		auth.PUT("profile",v1.UpdateProfile)
+
+		auth.POST("category/add",v1.AddCategory)
+		auth.PUT("category/:id",v1.EditCategory)
+		auth.DELETE("category/:id",v1.DeleteCategory)
+		auth.POST("article/add",v1.AddArticle)
 	}
 	// 不需要token的api
 	routerNoAuth := r.Group("api/v1")
@@ -32,6 +37,8 @@ func InitRouter(){
 		routerNoAuth.GET("user/:id",v1.GetUserInfo)
 
 		routerNoAuth.GET("profile/:id",v1.GetProfile)
+		routerNoAuth.GET("category/:id",v1.GetCategory)
+		routerNoAuth.GET("categories",v1.GetCategories)
 	}
 	_ = r.Run((utils.HttpAddress + utils.HttpPort))
 }
