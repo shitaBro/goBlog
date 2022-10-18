@@ -16,12 +16,14 @@ var JwtKey = []byte(utils.JwtKey)
 var code int
 type MyClamis struct {
 	Username string `json:"username"`
+	Id int `json:"id"`
 	jwt.StandardClaims
 }
-func SetToken(username string) (string,int) {
+func SetToken(username string,id int) (string,int) {
 	expireTime := time.Now().Add(24*time.Hour)
 	setClaims := MyClamis{
 		Username: username,
+		Id: id,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
 			Issuer: "jjw",
@@ -40,6 +42,7 @@ func CheckToken(token string) (*MyClamis,int) {
 	})
 	if key,_:= setToken.Claims.(*MyClamis); setToken.Valid {
 		return key,errmsg.SUCCESS
+		
 	}else {
 		return nil,errmsg.ERROR
 	}
@@ -68,6 +71,7 @@ func JwtToken() gin.HandlerFunc {
 			return
 		}
 		key,tcode := CheckToken(checkToken[1])
+		ctx.Set("user_id",key.Id)
 		if tcode == errmsg.ERROR {
 			code = errmsg.ERROR_TOKEN_WRONG
 			ctx.JSON(http.StatusOK,rresult.Result{

@@ -15,20 +15,20 @@ type User struct {
 	Role int `gorm:"type:int;DEFAULT:2" json:"role" label:"角色码"`
 }
 // 登录验证
-func CheckLogin(username string,password string) int {
+func CheckLogin(username string,password string) (int,int) {
 	var user User
 	db.Where("username = ?",username).First(&user)
 	if user.ID == 0 {
-		return errmsg.ERROR_USERNAME_NOT_EXIST
+		return errmsg.ERROR_USERNAME_NOT_EXIST,int(user.ID)
 	}
 	if ScryptPsw(password) != user.Password {
-		return errmsg.ERROR_PASSWORD_WRONG
+		return errmsg.ERROR_PASSWORD_WRONG,int(user.ID)
 	}
 	//非管理员 没权限
 	if user.Role != 1 {
-		return errmsg.ERROR_USER_NO_RIGHT
+		return errmsg.ERROR_USER_NO_RIGHT,int(user.ID)
 	}
-	return errmsg.SUCCESS
+	return errmsg.SUCCESS,int(user.ID)
 }
 //查询用户是否存在
 func CheckUserExits(username string) int {

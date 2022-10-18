@@ -9,6 +9,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	
 )
 func Login(c *gin.Context) {
 	var data model.User
@@ -23,9 +24,9 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
-	code = model.CheckLogin(data.Username,data.Password)
+	code,id := model.CheckLogin(data.Username,data.Password)
 	if code == errmsg.SUCCESS {
-		token,code = middleware.SetToken(data.Username) 
+		token,code = middleware.SetToken(data.Username,id) 
 	}else{
 
 	}

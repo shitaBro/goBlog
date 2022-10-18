@@ -10,6 +10,7 @@ import (
 func InitRouter(){
 	gin.SetMode(utils.AppMode)
 	r := gin.New()
+	
 	//跨域中间件
 	r.Use(middleware.Cors())
 	//日志
@@ -22,12 +23,15 @@ func InitRouter(){
 		auth.POST("user/add",v1.AddUser)
 		auth.DELETE("user/:id",v1.DeleteUser)
 		auth.PUT("user/:id/reset",v1.ResetPsw)
+		auth.PUT("profile",v1.UpdateProfile)
 	}
 	// 不需要token的api
 	routerNoAuth := r.Group("api/v1")
 	{
 		routerNoAuth.POST("login",v1.Login)
 		routerNoAuth.GET("user/:id",v1.GetUserInfo)
+
+		routerNoAuth.GET("profile/:id",v1.GetProfile)
 	}
 	_ = r.Run((utils.HttpAddress + utils.HttpPort))
 }

@@ -24,7 +24,7 @@ func init() {
 	// 禁用默认表名的复数形式，如果置为 true，则 `User` 的默认表名是 `user`
 	db.SingularTable(true)
 	//自动迁移
-	db.AutoMigrate()
+	db.AutoMigrate(&User{},&Profile{})
 	// SetMaxIdleCons 设置连接池中的最大闲置连接数。
 	db.DB().SetMaxIdleConns(10)
 	// SetMaxOpenCons 设置数据库的最大连接数量。

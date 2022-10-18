@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"fmt"
-	"io/ioutil"
+	
 	"math"
 	"os"
 	
@@ -63,9 +63,9 @@ func Loggering() gin.HandlerFunc {
 		}
 		method := ctx.Request.Method
 		path := ctx.Request.RequestURI
-		body,err  := ioutil.ReadAll(ctx.Request.Body)
-	
-		fmt.Println("read body err:",err)
+		// body,err  := ioutil.ReadAll(ctx.Request.Body)
+	body,b := ctx.Get("params")
+		fmt.Println("read body err:",b)
 		entry := Log.WithFields(logrus.Fields{
 			"HostName":  hostName,
 			"status":    statusCode,
