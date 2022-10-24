@@ -39,6 +39,8 @@ func InitRouter(){
 		routerNoAuth.GET("profile/:id",v1.GetProfile)
 		routerNoAuth.GET("category/:id",v1.GetCategory)
 		routerNoAuth.GET("categories",v1.GetCategories)
+		routerNoAuth.GET("article/:id",v1.GetSingleArticle)
+		routerNoAuth.GET("article/list",v1.GetArticles)
 	}
 	_ = r.Run((utils.HttpAddress + utils.HttpPort))
 }

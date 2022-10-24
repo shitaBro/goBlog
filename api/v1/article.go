@@ -4,9 +4,12 @@ import (
 	"goblog/model"
 	"goblog/utils/errmsg"
 	"goblog/utils/rresult"
+	"html/template"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/russross/blackfriday/v2"
 )
 
 func AddArticle(c *gin.Context) {
@@ -17,4 +20,34 @@ func AddArticle(c *gin.Context) {
 		Code: code,
 		Message: errmsg.GetErrmsg(code),
 	 })
+}
+
+func GetSingleArticle(c *gin.Context) {
+	id,_ := strconv.Atoi(c.Param("id"))
+	article,code := model.GetOneArticle(id)
+	mddata := []byte(article.Content)
+	article.Content = string(template.HTML(blackfriday.Run(mddata)))
+	c.JSON(http.StatusOK,rresult.Result{
+		Code: code,
+		Message: errmsg.GetErrmsg(code),
+		Data: article,
+	})
+}
+func GetArticles(c *gin.Context) {
+	keywords := c.Query("keywords")
+	pageSize,_ := strconv.Atoi(c.Query("pagesize"))
+	pageNum,_ := strconv.Atoi(c.Query("pagenum"))
+	if pageSize == 0 {
+		pageSize = -1
+	}
+	if pageNum == 0 {
+		pageNum = -1
+	}
+	data,code,totoal := model.GetArticles(keywords,pageSize,pageNum)
+	c.JSON(http.StatusOK,rresult.Result{
+		Code: code,
+		Message: errmsg.GetErrmsg(code),
+		Totoal: totoal,
+		Data: data,
+	})
 }
