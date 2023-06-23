@@ -3,8 +3,7 @@ package model
 import (
 	"fmt"
 	"goblog/utils/errmsg"
-	
-	// "github.com/jinzhu/gorm"
+	// "gorm.io/gorm"
 )
 
 type Profile struct {
@@ -36,10 +35,9 @@ func UpdateProfile(id int, data *Profile) int {
 	var profile Profile
 	db.Select("id").Where("id = ?", id).First(&profile)
 	fmt.Println("db .id:", profile.ID)
-	
-	
+
 	if profile.ID > 0 {
-		err := db.Model(&profile).Where("id = ?", id).Update(&data).Error
+		err := db.Model(&profile).Where("id = ?", id).Updates(&data).Error
 		if err != nil {
 			fmt.Println("update file err:", err)
 			return errmsg.ERROR
