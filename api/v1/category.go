@@ -24,7 +24,7 @@ func AddCategory(c *gin.Context) {
 	if code == errmsg.SUCCESS {
 		code,msg = model.AddCategory(&data)
 	}
-	c.JSON(http.StatusOK,rresult.Result{
+	c.JSON(http.StatusOK,rResult.Result{
 		Code: code,
 		Message: msg,
 		Data: data,
@@ -34,7 +34,7 @@ func AddCategory(c *gin.Context) {
 func GetCategory(c *gin.Context) {
 	id,_ := strconv.Atoi(c.Param("id"))
 	data,code := model.GetCategory(id)
-	c.JSON(http.StatusOK,rresult.Result{
+	c.JSON(http.StatusOK,rResult.Result{
 		Code: code,
 		Message: errmsg.GetErrmsg(code),
 		Data: data,
@@ -53,7 +53,7 @@ func GetCategories(c *gin.Context) {
 	}
 	data,totoal := model.GetCategories(name,pageSize,pageNum)
 	code := errmsg.SUCCESS
-	c.JSON(http.StatusOK,rresult.Result{
+	c.JSON(http.StatusOK,rResult.Result{
 		Code: code,
 		Message: errmsg.GetErrmsg(code),
 		Data: data,
@@ -71,7 +71,7 @@ func EditCategory(c *gin.Context) {
 	if code == errmsg.SUCCESS {
 		model.EditCategory(id,data.Name)
 	}
-	c.JSON(http.StatusOK,rresult.Result{
+	c.JSON(http.StatusOK,rResult.Result{
 		Code: code,
 		Message: errmsg.GetErrmsg(code),
 	})
@@ -79,7 +79,7 @@ func EditCategory(c *gin.Context) {
 func DeleteCategory(c *gin.Context) {
 	id,_ := strconv.Atoi(c.Param("id"))
 	code := model.DeleteCategory(id)
-	c.JSON(http.StatusOK,rresult.Result{
+	c.JSON(http.StatusOK,rResult.Result{
 		Code: code,
 		Message: errmsg.GetErrmsg(code),
 	})

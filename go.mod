@@ -5,6 +5,7 @@ go 1.17
 require (
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
 	gorm.io/gorm v1.25.2-0.20230530020048-26663ab9bf55
+	gorm.io/driver/mysql v1.5.1
 )
 
 require (
@@ -42,5 +43,5 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gorm.io/driver/mysql v1.5.1
+	
 )

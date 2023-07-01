@@ -15,6 +15,9 @@ type Article struct {
 	Cid     int    `gorm:"type:int;not null" json:"cid"`
 	Desc    string `gorm:"type:varchar(1024)" json:"desc"`
 	Content string `gorm:"type:longtext;not null" json:"content"`
+	Img          string `gorm:"type:varchar(100)" json:"img"`
+	CommentCount int    `gorm:"type:int;not null;default:0" json:"comment_count"`
+	ReadCount    int    `gorm:"type:int;not null;default:0" json:"read_count"`
 }
 
 func CreateArticle(data *Article) int {

@@ -23,11 +23,13 @@ func InitRouter(){
 		auth.POST("user/add",v1.AddUser)
 		auth.DELETE("user/:id",v1.DeleteUser)
 		auth.PUT("user/:id/reset",v1.ResetPsw)
+		auth.PUT("admin/changepsw/:id",v1.ChangePsw)
 		auth.PUT("profile",v1.UpdateProfile)
 
 		auth.POST("category/add",v1.AddCategory)
 		auth.PUT("category/:id",v1.EditCategory)
 		auth.DELETE("category/:id",v1.DeleteCategory)
+		
 		auth.POST("article/add",v1.AddArticle)
 	}
 	// 不需要token的api

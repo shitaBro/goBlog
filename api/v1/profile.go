@@ -15,7 +15,7 @@ import (
 func GetProfile(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	data, code := model.GetProfile(id)
-	c.JSON(http.StatusOK, rresult.Result{
+	c.JSON(http.StatusOK, rResult.Result{
 		Code:    code,
 		Message: errmsg.GetErrmsg(code),
 		Data:    data,
@@ -36,7 +36,7 @@ func UpdateProfile(c *gin.Context) {
 	// id,_ := strconv.Atoi(c.Param("id"))
 	c.ShouldBindJSON(&data)
 	code = model.UpdateProfile(midid.(int), &data)
-	c.JSON(http.StatusOK, rresult.Result{
+	c.JSON(http.StatusOK, rResult.Result{
 		Code:    code,
 		Message: errmsg.GetErrmsg(code),
 	})

@@ -1,4 +1,4 @@
-package rresult
+package rResult
 
 type Result struct {
 	Code    int         `json:"code"`

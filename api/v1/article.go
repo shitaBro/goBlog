@@ -16,7 +16,7 @@ func AddArticle(c *gin.Context) {
 	var data model.Article
 	c.ShouldBindJSON(&data)
 	 code := model.CreateArticle(&data)
-	 c.JSON(http.StatusOK,rresult.Result{
+	 c.JSON(http.StatusOK,rResult.Result{
 		Code: code,
 		Message: errmsg.GetErrmsg(code),
 	 })
@@ -27,7 +27,7 @@ func GetSingleArticle(c *gin.Context) {
 	article,code := model.GetOneArticle(id)
 	mddata := []byte(article.Content)
 	article.Content = string(template.HTML(blackfriday.Run(mddata)))
-	c.JSON(http.StatusOK,rresult.Result{
+	c.JSON(http.StatusOK,rResult.Result{
 		Code: code,
 		Message: errmsg.GetErrmsg(code),
 		Data: article,
@@ -44,7 +44,7 @@ func GetArticles(c *gin.Context) {
 		pageNum = -1
 	}
 	data,code,totoal := model.GetArticles(keywords,pageSize,pageNum)
-	c.JSON(http.StatusOK,rresult.Result{
+	c.JSON(http.StatusOK,rResult.Result{
 		Code: code,
 		Message: errmsg.GetErrmsg(code),
 		Totoal: totoal,

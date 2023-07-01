@@ -17,7 +17,7 @@ func AddUser(c *gin.Context) {
 	_  = c.ShouldBindJSON(&data)
 	msg,code = validator.Validate(&data)
 	if code != errmsg.SUCCESS {
-		c.JSON(http.StatusOK,rresult.Result{
+		c.JSON(http.StatusOK,rResult.Result{
 			Code: code,
 			Message: msg,
 		})
@@ -31,7 +31,7 @@ func AddUser(c *gin.Context) {
 		model.CreateUser(&data)
 
 	}
-	c.JSON(http.StatusOK,rresult.Result{
+	c.JSON(http.StatusOK,rResult.Result{
 		Code: code,
 		Message: errmsg.GetErrmsg(code),
 		Data: data,
@@ -40,7 +40,7 @@ func AddUser(c *gin.Context) {
 func GetUserInfo(c *gin.Context) {
 	id ,_ := strconv.Atoi(c.Param("id"))
 	data,code := model.GetUserInfo(id)
-	c.JSON(http.StatusOK,rresult.Result{
+	c.JSON(http.StatusOK,rResult.Result{
 		Code: code,
 		Message: errmsg.GetErrmsg(code),
 		Data: data,
@@ -49,7 +49,7 @@ func GetUserInfo(c *gin.Context) {
 func DeleteUser(c *gin.Context) {
 	id,_ := strconv.Atoi(c.Param("id"))
 	code = model.DeleteUser(id)
-	c.JSON(http.StatusOK,rresult.Result{
+	c.JSON(http.StatusOK,rResult.Result{
 		Code: code,
 		Message: errmsg.GetErrmsg(code),
 		Data: id,
@@ -58,9 +58,20 @@ func DeleteUser(c *gin.Context) {
 func ResetPsw(c *gin.Context) {
 	id,_ := strconv.Atoi(c.Param("id"))
 	code = model.ResetPsw(id)
-	c.JSON(http.StatusOK,rresult.Result{
+	c.JSON(http.StatusOK,rResult.Result{
 		Code: code,
 		Message: errmsg.GetErrmsg(code),
 		
 	})
+}
+func ChangePsw(c *gin.Context) {
+	var data model.User
+	id,_ := strconv.Atoi(c.Param("id"))
+	_ = c.ShouldBindJSON(&data)
+	code  := model.ChangePsw(id,&data)
+	c.JSON(http.StatusOK,rResult.Result{
+		Code: code,
+		Message: errmsg.GetErrmsg(code),
+	})
+
 }

@@ -18,7 +18,7 @@ func Login(c *gin.Context) {
 	c.ShouldBindJSON(&data)
 	msg,code := validator.Validate(&data)
 	if code != errmsg.SUCCESS {
-		c.JSON(http.StatusOK,rresult.Result{
+		c.JSON(http.StatusOK,rResult.Result{
 			Code: code,
 			Message: msg,
 		})
@@ -30,7 +30,7 @@ func Login(c *gin.Context) {
 	}else{
 
 	}
-	c.JSON(http.StatusOK,rresult.Result{
+	c.JSON(http.StatusOK,rResult.Result{
 		Code: code,
 		Message: errmsg.GetErrmsg(code),
 		Data: token,

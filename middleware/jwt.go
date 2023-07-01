@@ -53,7 +53,7 @@ func JwtToken() gin.HandlerFunc {
 		tokenHeader := ctx.Request.Header.Get("Authorization")
 		if tokenHeader == "" {
 			code = errmsg.ERROR_TOKEN_NOT_EXIST
-			ctx.JSON(http.StatusOK,rresult.Result{
+			ctx.JSON(http.StatusOK,rResult.Result{
 				Code: code,
 				Message: errmsg.GetErrmsg(code),
 			})
@@ -63,7 +63,7 @@ func JwtToken() gin.HandlerFunc {
 		checkToken := strings.SplitN(tokenHeader," ",2)
 		if len(checkToken) != 2 && checkToken[0] != "Bearer" {
 			code = errmsg.ERROR_TOKEN_TYPE_WRONG
-			ctx.JSON(http.StatusOK,rresult.Result{
+			ctx.JSON(http.StatusOK,rResult.Result{
 				Code: code,
 				Message: errmsg.GetErrmsg(code),
 			})
@@ -74,7 +74,7 @@ func JwtToken() gin.HandlerFunc {
 		ctx.Set("user_id",key.Id)
 		if tcode == errmsg.ERROR {
 			code = errmsg.ERROR_TOKEN_WRONG
-			ctx.JSON(http.StatusOK,rresult.Result{
+			ctx.JSON(http.StatusOK,rResult.Result{
 				Code: code,
 				Message: errmsg.GetErrmsg(code),
 			})
@@ -83,7 +83,7 @@ func JwtToken() gin.HandlerFunc {
 		}
 		if time.Now().Unix() > key.ExpiresAt {
 			code = errmsg.ERROR_TOKEN_RUNTIME 
-			ctx.JSON(http.StatusOK,rresult.Result{
+			ctx.JSON(http.StatusOK,rResult.Result{
 				Code: code,
 				Message: errmsg.GetErrmsg(code),
 			})

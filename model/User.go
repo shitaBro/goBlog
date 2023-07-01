@@ -4,7 +4,7 @@ import (
 	"encoding/base64"
 	"goblog/utils/errmsg"
 	"log"
-
+	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/crypto/scrypt"
 	"gorm.io/gorm"
 )
@@ -124,7 +124,7 @@ func ChangePsw(id int, data *User) int {
 
 // 重置密码
 func ResetPsw(id int) int {
-	err := db.Model(&User{}).Where("id = ?", id).Update("password", ScryptPsw("123456")).Error
+	err := db.Model(&User{}).Where("id = ?", id).Update("password", "123456").Error
 	if err == nil {
 		return errmsg.SUCCESS
 	}
@@ -141,4 +141,28 @@ func ScryptPsw(password string) string {
 	}
 	finalPsw := base64.StdEncoding.EncodeToString(Hashpsw)
 	return finalPsw
+}
+
+func (u *User)BeforeCreate(_ *gorm.DB) (err error) {
+	u.Password = ScryptPsw(u.Password)
+	u.Role = 2
+	return nil
+}
+func (u *User)BeforeUpdate(_ *gorm.DB) (err error) {
+	u.Password = ScryptPsw(u.Password)
+	return nil
+}
+// 前端登录
+func CheckLoginFront(username string,psw string) (User,int) {
+	var user User
+	var pswError error
+	db.Where("username = ?",username).Find(&user)
+	pswError = bcrypt.CompareHashAndPassword([]byte(user.Password),[]byte(psw))
+	if (user.ID == 0) {
+		return user,errmsg.ERROR_USERNAME_NOT_EXIST
+	}
+	if (pswError != nil) {
+		return user,errmsg.ERROR_PASSWORD_WRONG
+	}
+	return user,errmsg.SUCCESS
 }
