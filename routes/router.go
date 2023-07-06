@@ -20,27 +20,39 @@ func InitRouter(){
 	auth := r.Group("api/v1")
 	auth.Use(middleware.JwtToken())
 	{
+		//用户管理
 		auth.POST("user/add",v1.AddUser)
 		auth.DELETE("user/:id",v1.DeleteUser)
 		auth.PUT("user/:id/reset",v1.ResetPsw)
 		auth.PUT("admin/changepsw/:id",v1.ChangePsw)
 		auth.PUT("profile",v1.UpdateProfile)
-
+		//分类管理
 		auth.POST("category/add",v1.AddCategory)
 		auth.PUT("category/:id",v1.EditCategory)
 		auth.DELETE("category/:id",v1.DeleteCategory)
-		
+		//文章管理
 		auth.POST("article/add",v1.AddArticle)
+		auth.PUT("article/edit",v1.EditArticle)
+		auth.DELETE("article/delete",v1.DeleteArticle)
+		
+		//上传文件
+		auth.POST("upload",v1.UpdateProfile)
+
 	}
 	// 不需要token的api
 	routerNoAuth := r.Group("api/v1")
 	{
+		//用户
 		routerNoAuth.POST("login",v1.Login)
 		routerNoAuth.GET("user/:id",v1.GetUserInfo)
-
+		routerNoAuth.GET("users",v1.GetUsers)
 		routerNoAuth.GET("profile/:id",v1.GetProfile)
+		//分类
 		routerNoAuth.GET("category/:id",v1.GetCategory)
 		routerNoAuth.GET("categories",v1.GetCategories)
+		//获取category下的文章 ?cid=%s&page=%s&size=%s
+		routerNoAuth.GET("category/article",v1.GetCategoryArticles)
+		//文章
 		routerNoAuth.GET("article/:id",v1.GetSingleArticle)
 		routerNoAuth.GET("article/list",v1.GetArticles)
 	}

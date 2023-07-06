@@ -51,3 +51,22 @@ func GetArticles(c *gin.Context) {
 		Data: data,
 	})
 }
+
+func EditArticle(c *gin.Context) {
+	var data model.Article
+	id, _ := strconv.Atoi(c.Query("id"))
+	_ = c.ShouldBindJSON(&data)
+	code := model.EditArticle(id,&data)
+	c.JSON(http.StatusOK,rResult.Result{
+		Code: code,
+		Message: errmsg.GetErrmsg(code),
+	})
+}
+func DeleteArticle(c *gin.Context) {
+	id,_ := strconv.Atoi(c.Query("id"))
+	code := model.DeleteArticle(id)
+	c.JSON(http.StatusOK,rResult.Result{
+		Code: code,
+		Message: errmsg.GetErrmsg(code),
+	})
+}

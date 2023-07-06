@@ -12,14 +12,14 @@ import (
 )
 
 var db *gorm.DB
-var dberr error
+var err error
 
 func Init() {
 
 	// dsn := "root:12345678@tcp(127.0.0.1:3306)/user?charset=utf8&parseTime=True&loc=Local&interpolateParams=True"
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local&interpolateParams=True",
 		utils.DbUser, utils.DbPwd, utils.DbHost, utils.DbPort, utils.DbName)
-	db, dberr = gorm.Open(mysql.Open(dsn), &gorm.Config{
+	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		// gorm日志模式：silent
 		Logger: logger.Default.LogMode(logger.Silent),
 		// 外键约束
@@ -31,8 +31,8 @@ func Init() {
 			SingularTable: true,
 		},
 	})
-	if dberr != nil {
-		fmt.Println("数据库连接失败,请检查参数", dberr)
+	if err != nil {
+		fmt.Println("数据库连接失败,请检查参数", err)
 	} else {
 		fmt.Println("数据库链接成功")
 	}

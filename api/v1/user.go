@@ -46,6 +46,27 @@ func GetUserInfo(c *gin.Context) {
 		Data: data,
 	})
 }
+func GetUsers(c *gin.Context) {
+	page,_ := strconv.Atoi(c.Query("page"))
+	size,_ := strconv.Atoi(c.Query("size"))
+	username := c.Query("name")
+	switch {
+	case size > 100:
+		size = 100
+	case size <= 0:
+		size = 10
+		
+	}
+	if page == 0 {
+		page = 1
+	}
+	users,count := model.GetUserList(username,page,size)
+	c.JSON(http.StatusOK,rResult.Result{
+		Code: errmsg.SUCCESS,
+		Data: users,
+		Totoal: count,
+	})
+}
 func DeleteUser(c *gin.Context) {
 	id,_ := strconv.Atoi(c.Param("id"))
 	code = model.DeleteUser(id)
