@@ -42,18 +42,9 @@ func GetCategory(c *gin.Context) {
 }
 
 func GetCategoryArticles(c *gin.Context) {
-	page,_ := strconv.Atoi(c.Query("page"))
-	size,_ := strconv.Atoi(c.Query("size"))
+	
 	cid,_ := strconv.Atoi(c.Query("cid"))
-	switch{
-	case size >= 100:
-		size = 100
-	case size <= 0:
-		size = 10
-	}
-	if page == 0 {
-		page = 1
-	}
+	page,size := HandleSize(c)
 	articles,code,count := model.GetCategoryArticle(cid,page,size)
 	c.JSON(http.StatusOK,rResult.Result{
 		Code: code,
@@ -65,15 +56,8 @@ func GetCategoryArticles(c *gin.Context) {
 
 func GetCategories(c *gin.Context) {
 	name := c.Query("name")
-	pageSize,_ := strconv.Atoi(c.Query("pagesize"))
-	pageNum,_ := strconv.Atoi(c.Query("pagenum"))
-	if pageSize == 0 {
-		pageSize = -1
-	}
-	if pageNum == 0 {
-		pageNum = -1
-	}
-	data,totoal := model.GetCategories(name,pageSize,pageNum)
+	page,size := HandleSize(c)
+	data,totoal := model.GetCategories(name,page,size)
 	code := errmsg.SUCCESS
 	c.JSON(http.StatusOK,rResult.Result{
 		Code: code,

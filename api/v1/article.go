@@ -35,15 +35,8 @@ func GetSingleArticle(c *gin.Context) {
 }
 func GetArticles(c *gin.Context) {
 	keywords := c.Query("keywords")
-	pageSize,_ := strconv.Atoi(c.Query("pagesize"))
-	pageNum,_ := strconv.Atoi(c.Query("pagenum"))
-	if pageSize == 0 {
-		pageSize = -1
-	}
-	if pageNum == 0 {
-		pageNum = -1
-	}
-	data,code,totoal := model.GetArticles(keywords,pageSize,pageNum)
+	page,size := HandleSize(c)
+	data,code,totoal := model.GetArticles(keywords,page,size)
 	c.JSON(http.StatusOK,rResult.Result{
 		Code: code,
 		Message: errmsg.GetErrmsg(code),
@@ -70,3 +63,4 @@ func DeleteArticle(c *gin.Context) {
 		Message: errmsg.GetErrmsg(code),
 	})
 }
+

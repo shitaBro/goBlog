@@ -47,19 +47,9 @@ func GetUserInfo(c *gin.Context) {
 	})
 }
 func GetUsers(c *gin.Context) {
-	page,_ := strconv.Atoi(c.Query("page"))
-	size,_ := strconv.Atoi(c.Query("size"))
+	
 	username := c.Query("name")
-	switch {
-	case size > 100:
-		size = 100
-	case size <= 0:
-		size = 10
-		
-	}
-	if page == 0 {
-		page = 1
-	}
+	page,size := HandleSize(c)
 	users,count := model.GetUserList(username,page,size)
 	c.JSON(http.StatusOK,rResult.Result{
 		Code: errmsg.SUCCESS,
@@ -95,4 +85,20 @@ func ChangePsw(c *gin.Context) {
 		Message: errmsg.GetErrmsg(code),
 	})
 
+}
+func HandleSize(c * gin.Context) (int,int) {
+	page,_ := strconv.Atoi(c.Query("page"))
+	size,_ := strconv.Atoi(c.Query("size"))
+	
+	switch {
+	case size > 100:
+		size = 100
+	case size <= 0:
+		size = 10
+		
+	}
+	if page == 0 {
+		page = 1
+	}
+	return page,size
 }

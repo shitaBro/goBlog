@@ -17,7 +17,7 @@ func UploadFile(file multipart.File,fileHeader *multipart.FileHeader, fileSize i
 	day := GetDate()
 	dir := "static/upload/" + day
 	if _,err := os.Stat(dir); os.IsNotExist(err) {
-		error := os.Mkdir(dir,0777)
+		error := os.MkdirAll(dir,0777)
 		fmt.Printf("dir err:%v\n",error)
 		
 	}

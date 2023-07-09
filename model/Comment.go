@@ -31,6 +31,12 @@ func GetComment(id int) (Comment,int) {
 	}
 	return comment,errmsg.SUCCESS
 }
+func GetCommentCount(id int) int64 {
+	var comment Comment
+	var totoal int64
+	db.Find(&comment).Where("article_id = ?",id).Where("status= ?",1).Count(&totoal)
+	return totoal
+}
 // 获取评论列表 
 func GetCommentList(id int,size int,page int,) ([]Comment,int64,int) {
 	var commentList []Comment
